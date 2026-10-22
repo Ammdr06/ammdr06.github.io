@@ -48,3 +48,11 @@
 #certificate-request-form :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 @media(max-width:680px){#certificate-request-dialog{padding:22px 18px;max-width:calc(100% - 24px)}#certificate-request-dialog .dialog-heading h2{font-size:25px}.request-field-grid{grid-template-columns:1fr;gap:0}.request-actions{gap:10px}.document-access-note{padding-left:14px}}
 @media print{.document-access-note,#certificate-request-dialog{display:none!important}}
+
+/* Direct certificate request submission. */
+#certificate-request-form .request-trap,#certificate-request-form input[type="hidden"]{display:none!important}
+.request-privacy a{text-decoration:underline;text-underline-offset:2px}
+.request-status[data-state="error"]{color:#8b342c}
+.request-status[data-state="success"]{color:#285c42}
+.request-actions button:disabled,.close-certificate-dialog:disabled{opacity:.7;cursor:wait}
+.request-actions button:disabled:not([aria-busy="true"]){cursor:default}

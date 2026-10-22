@@ -25,10 +25,14 @@ After editing the site files, commit to `main`; GitHub Pages publishes updates a
 
 ## Certificate access
 
-Certificate descriptions remain public. Original certificate PDFs are not included in the current publishing tree. Each Request certificate link opens an accessible dialog for name, institution or organization, email, and purpose. A phone number is not requested.
+Certificate descriptions remain public. Original certificate PDFs are not included in the current publishing tree. Each View certificate button opens an access-request dialog asking for name, institution or organization, email, and purpose. A phone number is not requested. Visitors are told that access requires individual review.
 
-The form prepares an email draft to the portfolio owner's published contact address. Visitors must send that email themselves; the website has no submission backend, request database, analytics, or automatic document delivery. Copy request is provided as an alternative. The draft and form data are not stored in browser storage. Without JavaScript, each request link opens a prefilled email template.
+Send request submits the details to FormSubmit's documented cross-origin AJAX endpoint for the owner's published email address. No email app or copying is needed. FormSubmit requires a one-time activation email to be confirmed by the owner; forwarding is not ready until activation is complete. Do not treat the service's acceptance of a request as proof of inbox delivery.
 
-Review requests manually. If approved, share the necessary certificate privately with the approved email address using a service with enforced access permissions. Do not upload originals back into this public repository or send a publicly accessible file link. Recipient-specific watermarks may be applied when preparing a copy.
+The UI checks both HTTP status and the explicit boolean or string true response. Activation, rejection, timeout, and network errors preserve the form entries and do not display a successful submission. The submit button prevents duplicate sends while a request is pending. A hidden honeypot is included; the provider's default spam protection is not disabled.
+
+The form discloses that FormSubmit processes submissions, retains them for 30 days, and links to its privacy policy. The website has no request database, browser-storage persistence, analytics, or automatic certificate delivery.
+
+Review requests manually. If approved, share the necessary certificate privately with the approved email address using enforced access permissions. Do not upload originals back into this public repository or send a publicly accessible certificate link.
 
 Deleting files from the publishing tree does not erase earlier Git commits, caches, forks, or downloaded copies. Earlier revisions may still contain the previous CVs and certificates; removing those revisions is a separate history-cleanup operation.

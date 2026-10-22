@@ -122,32 +122,49 @@ if('IntersectionObserver' in window) {
 
 renderPublications();
 
-// Certificate requests are prepared locally and sent only through the visitor's email app.
+// Certificate requests are forwarded by FormSubmit; certificate files remain private.
 const certificateRequestDialog=document.querySelector('#certificate-request-dialog');
 const certificateRequestForm=document.querySelector('#certificate-request-form');
 const certificateRequestStatus=document.querySelector('#certificate-request-status');
+const certificateRequestSubmit=document.querySelector('#send-certificate-request');
+const certificateRequestClose=document.querySelector('.close-certificate-dialog');
 let certificateRequestTrigger=null;
-document.querySelectorAll('[data-certificate]').forEach(link => {
-  link.addEventListener('click',event => {
-    if(typeof certificateRequestDialog.showModal!=='function')return;
-    event.preventDefault();
+let certificateRequestSending=false;
+let certificateRequestSubmitted=false;
+function setCertificateRequestBusy(busy) {
+  certificateRequestSending=busy;
+  certificateRequestForm.setAttribute('aria-busy',String(busy));
+  certificateRequestForm.querySelectorAll('input,textarea,button').forEach(field => {field.disabled=busy;});
+  certificateRequestClose.disabled=busy;
+  certificateRequestSubmit.disabled=busy||certificateRequestSubmitted;
+  certificateRequestSubmit.textContent=busy?'Sending…':certificateRequestSubmitted?'Request submitted':'Send request →';
+}
+document.querySelectorAll('[data-certificate]').forEach(button => {
+  button.addEventListener('click',() => {
     certificateRequestForm.reset();
     certificateRequestForm.querySelectorAll('input,textarea').forEach(field => field.setCustomValidity(''));
     certificateRequestStatus.textContent='';
-    document.querySelector('#certificate-document').value=link.dataset.certificate;
-    certificateRequestTrigger=link;
+    delete certificateRequestStatus.dataset.state;
+    certificateRequestSubmitted=false;
+    setCertificateRequestBusy(false);
+    document.querySelector('#certificate-document').value=button.dataset.certificate;
+    certificateRequestTrigger=button;
     certificateRequestDialog.showModal();
     document.querySelector('#request-name').focus();
   });
 });
-document.querySelector('.close-certificate-dialog').addEventListener('click',() => certificateRequestDialog.close());
+certificateRequestClose.addEventListener('click',() => {if(!certificateRequestSending)certificateRequestDialog.close();});
+certificateRequestDialog.addEventListener('cancel',event => {if(certificateRequestSending)event.preventDefault();});
 certificateRequestDialog.addEventListener('close',() => {
   certificateRequestForm.reset();
   certificateRequestStatus.textContent='';
+  delete certificateRequestStatus.dataset.state;
+  certificateRequestSubmitted=false;
+  setCertificateRequestBusy(false);
   certificateRequestTrigger?.focus({preventScroll:true});
 });
 certificateRequestDialog.addEventListener('click',event => {
-  if(event.target!==certificateRequestDialog)return;
+  if(event.target!==certificateRequestDialog||certificateRequestSending)return;
   const rect=certificateRequestDialog.getBoundingClientRect();
   if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)certificateRequestDialog.close();
 });
@@ -160,24 +177,57 @@ function prepareCertificateRequest() {
     field.setCustomValidity(field.value?'':'Please complete this field.');
   }
   if(!certificateRequestForm.reportValidity())return null;
+  if(certificateRequestForm.elements.namedItem('_honey').value)return null;
   const data=new FormData(certificateRequestForm);
-  const title=data.get('document');
-  const subject='Certificate access request — '+title;
-  const body=['Dear Mahadeer A,','','I would like to request access to: '+title,'',
-    'Name: '+data.get('name'),'Institution / organization: '+data.get('institution'),
-    'Email: '+data.get('email'),'Purpose of request: '+data.get('purpose'),'','Thank you.'].join('\n');
-  return {subject,body};
+  return {
+    name:data.get('name'),
+    institution:data.get('institution'),
+    email:data.get('email'),
+    certificate:data.get('document'),
+    purpose:data.get('purpose'),
+    _subject:'Portfolio certificate access request',
+    _template:'table',
+    _url:'https://ammdr06.github.io/',
+    _honey:''
+  };
 }
-certificateRequestForm.addEventListener('submit',event => {
+certificateRequestForm.addEventListener('submit',async event => {
   event.preventDefault();
+  if(certificateRequestSending||certificateRequestSubmitted)return;
   const request=prepareCertificateRequest();if(!request)return;
-  certificateRequestStatus.textContent='Your request is ready. Send it from your email app, or use Copy request if no app opens.';
-  window.location.href='mailto:ammdr62424@gmail.com?subject='+encodeURIComponent(request.subject)+'&body='+encodeURIComponent(request.body);
-});
-document.querySelector('#copy-certificate-request').addEventListener('click',async () => {
-  const request=prepareCertificateRequest();if(!request)return;
-  const copied=await copyText('To: ammdr62424@gmail.com\nSubject: '+request.subject+'\n\n'+request.body);
-  certificateRequestStatus.textContent=copied
-    ?'Request copied. Paste it into an email to ammdr62424@gmail.com and send it to complete your request.'
-    :'Copy was unavailable. Use Open email draft or email your details to ammdr62424@gmail.com.';
+  certificateRequestStatus.dataset.state='pending';
+  certificateRequestStatus.textContent='Sending your request…';
+  setCertificateRequestBusy(true);
+  const controller=new AbortController();
+  const timeout=setTimeout(() => controller.abort(),20000);
+  try {
+    const response=await fetch('https://formsubmit.co/ajax/ammdr62424@gmail.com',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(request),
+      signal:controller.signal,
+      credentials:'omit'
+    });
+    const result=await response.json();
+    if(/activat/i.test(String(result.message||''))) {
+      certificateRequestStatus.dataset.state='error';
+      certificateRequestStatus.textContent='Direct requests are awaiting activation by the portfolio owner. Please try again later or contact ammdr62424@gmail.com.';
+      return;
+    }
+    if(!response.ok||(result.success!==true&&result.success!=='true'))throw new Error('Submission not accepted');
+    certificateRequestSubmitted=true;
+    certificateRequestStatus.dataset.state='success';
+    certificateRequestStatus.textContent='Request submitted. Access details will be emailed to you if your request is approved.';
+    const certificate=request.certificate;
+    certificateRequestForm.reset();
+    document.querySelector('#certificate-document').value=certificate;
+  } catch(error) {
+    certificateRequestStatus.dataset.state='error';
+    certificateRequestStatus.textContent=error.name==='AbortError'
+      ?'We could not confirm submission in time. Your entries are still here. Please try again later or contact ammdr62424@gmail.com.'
+      :'Your request could not be submitted. Your entries are still here. Please try again later or contact ammdr62424@gmail.com.';
+  } finally {
+    clearTimeout(timeout);
+    setCertificateRequestBusy(false);
+  }
 });
