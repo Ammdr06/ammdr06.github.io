@@ -78,7 +78,7 @@ async function copyText(value) {
   }
   const field=document.createElement('textarea');
   field.value=value;field.style.cssText='position:fixed;left:-9999px;top:0;opacity:0;';field.setAttribute('aria-hidden','true');
-  const parent=document.querySelector('#citation-dialog').open?document.querySelector('#citation-dialog'):document.body;
+  const parent=document.querySelector('dialog[open]')||document.body;
   const previousFocus=document.activeElement;
   parent.appendChild(field);field.focus();field.select();
   let copied=false;
@@ -121,3 +121,63 @@ if('IntersectionObserver' in window) {
 }
 
 renderPublications();
+
+// Certificate requests are prepared locally and sent only through the visitor's email app.
+const certificateRequestDialog=document.querySelector('#certificate-request-dialog');
+const certificateRequestForm=document.querySelector('#certificate-request-form');
+const certificateRequestStatus=document.querySelector('#certificate-request-status');
+let certificateRequestTrigger=null;
+document.querySelectorAll('[data-certificate]').forEach(link => {
+  link.addEventListener('click',event => {
+    if(typeof certificateRequestDialog.showModal!=='function')return;
+    event.preventDefault();
+    certificateRequestForm.reset();
+    certificateRequestForm.querySelectorAll('input,textarea').forEach(field => field.setCustomValidity(''));
+    certificateRequestStatus.textContent='';
+    document.querySelector('#certificate-document').value=link.dataset.certificate;
+    certificateRequestTrigger=link;
+    certificateRequestDialog.showModal();
+    document.querySelector('#request-name').focus();
+  });
+});
+document.querySelector('.close-certificate-dialog').addEventListener('click',() => certificateRequestDialog.close());
+certificateRequestDialog.addEventListener('close',() => {
+  certificateRequestForm.reset();
+  certificateRequestStatus.textContent='';
+  certificateRequestTrigger?.focus({preventScroll:true});
+});
+certificateRequestDialog.addEventListener('click',event => {
+  if(event.target!==certificateRequestDialog)return;
+  const rect=certificateRequestDialog.getBoundingClientRect();
+  if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)certificateRequestDialog.close();
+});
+certificateRequestForm.querySelectorAll('input,textarea').forEach(field => {
+  field.addEventListener('input',() => field.setCustomValidity(''));
+});
+function prepareCertificateRequest() {
+  for(const field of certificateRequestForm.querySelectorAll('input[required],textarea[required]')) {
+    field.value=field.value.trim();
+    field.setCustomValidity(field.value?'':'Please complete this field.');
+  }
+  if(!certificateRequestForm.reportValidity())return null;
+  const data=new FormData(certificateRequestForm);
+  const title=data.get('document');
+  const subject='Certificate access request — '+title;
+  const body=['Dear Mahadeer A,','','I would like to request access to: '+title,'',
+    'Name: '+data.get('name'),'Institution / organization: '+data.get('institution'),
+    'Email: '+data.get('email'),'Purpose of request: '+data.get('purpose'),'','Thank you.'].join('\n');
+  return {subject,body};
+}
+certificateRequestForm.addEventListener('submit',event => {
+  event.preventDefault();
+  const request=prepareCertificateRequest();if(!request)return;
+  certificateRequestStatus.textContent='Your request is ready. Send it from your email app, or use Copy request if no app opens.';
+  window.location.href='mailto:ammdr62424@gmail.com?subject='+encodeURIComponent(request.subject)+'&body='+encodeURIComponent(request.body);
+});
+document.querySelector('#copy-certificate-request').addEventListener('click',async () => {
+  const request=prepareCertificateRequest();if(!request)return;
+  const copied=await copyText('To: ammdr62424@gmail.com\nSubject: '+request.subject+'\n\n'+request.body);
+  certificateRequestStatus.textContent=copied
+    ?'Request copied. Paste it into an email to ammdr62424@gmail.com and send it to complete your request.'
+    :'Copy was unavailable. Use Open email draft or email your details to ammdr62424@gmail.com.';
+});
