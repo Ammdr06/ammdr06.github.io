@@ -23,5 +23,5 @@
 .certificate-link{display:inline-flex;align-items:center;gap:7px;width:fit-content;max-width:100%;margin-top:10px;padding:5px 0 3px;border-bottom:1px solid var(--gold-light);font-size:12px;font-weight:600;line-height:1.5;color:var(--ink)}
 .certificate-link:hover{color:#886d35;border-bottom-color:var(--gold)}
 .certificate-link>span{font-size:15px;font-weight:400}
-.certification-list .certificate-link{margin-top:4px}
+.certification-list .certificate-link,.development-list .certificate-link{margin-top:4px}
 @media print{.certificate-link{display:none!important}}
