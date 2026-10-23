@@ -117,7 +117,7 @@ if('IntersectionObserver' in window) {
   const observer=new IntersectionObserver(entries => {
     entries.forEach(entry => {if(entry.isIntersecting){links.forEach(link => {if(link.hash==='#'+entry.target.id)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current');});}});
   },{rootMargin:'-12% 0px -65% 0px',threshold:0});
-  ['home','about','research','publications','academic','contact'].forEach(id => observer.observe(document.getElementById(id)));
+  ['home','about','research','publications','peer-review','academic','contact'].forEach(id => observer.observe(document.getElementById(id)));
 }
 
 renderPublications();

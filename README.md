@@ -36,3 +36,7 @@ The form discloses that FormSubmit processes submissions, retains them for 30 da
 Review requests manually. If approved, share the necessary certificate privately with the approved email address using enforced access permissions. Do not upload originals back into this public repository or send a publicly accessible certificate link.
 
 Deleting files from the publishing tree does not erase earlier Git commits, caches, forks, or downloaded copies. Earlier revisions may still contain the previous CVs and certificates; removing those revisions is a separate history-cleanup operation.
+
+## Peer-review service
+
+Peer-review service has a dedicated full-width section immediately after Publications. It identifies the role as ad hoc reviewer and presents the existing journal names in a responsive navy, ivory, and muted-gold layout. Peer review is included in the page navigation. No reviewer count or summary-strip metric is used. The earlier small reviewer block was moved out of the Recognition and leadership column.

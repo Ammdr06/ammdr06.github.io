@@ -56,3 +56,16 @@
 .request-status[data-state="success"]{color:#285c42}
 .request-actions button:disabled,.close-certificate-dialog:disabled{opacity:.7;cursor:wait}
 .request-actions button:disabled:not([aria-busy="true"]){cursor:default}
+
+/* Dedicated peer-review service section. */
+.peer-review-section{background:var(--ink);color:var(--paper);border-block:1px solid #415867}
+.peer-review-section .eyebrow{color:var(--gold-light)}
+.peer-review-section .section-heading{gap:45px}
+.peer-review-section .section-heading>p{color:#c6d1d1;max-width:370px}
+.peer-review-journals{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;list-style:none;margin:0;padding:0}
+.peer-review-journals>li{grid-column:span 2;display:flex;align-items:center;min-height:132px;padding:24px;background:#203d4e;border:1px solid #415867;border-top:2px solid var(--gold-light);border-radius:var(--radius)}
+.peer-review-journals>li:nth-last-child(-n+2){grid-column:span 3}
+.peer-review-journals h3{font:25px/1.35 var(--serif);font-weight:400;margin:0;overflow-wrap:break-word}
+@media(max-width:920px){.peer-review-section .section-heading{gap:24px}.peer-review-section .section-heading>p{max-width:300px;font-size:13px}.peer-review-journals{grid-template-columns:repeat(2,minmax(0,1fr))}.peer-review-journals>li,.peer-review-journals>li:nth-last-child(-n+2){grid-column:auto}.peer-review-journals>li:last-child{grid-column:1/-1}.peer-review-journals h3{font-size:24px}}
+@media(max-width:680px){.peer-review-section .section-heading{display:block}.peer-review-section .section-heading>p{max-width:none;font-size:14px;margin-top:18px}.peer-review-journals{grid-template-columns:1fr;gap:12px}.peer-review-journals>li,.peer-review-journals>li:nth-last-child(-n+2),.peer-review-journals>li:last-child{grid-column:auto;min-height:96px;padding:22px}.peer-review-journals h3{font-size:23px}}
+@media print{.peer-review-section{background:white;color:#111;border-block:1px solid #bbb}.peer-review-section .eyebrow,.peer-review-section .section-heading>p{color:#333}.peer-review-journals{grid-template-columns:1fr 1fr;gap:10px}.peer-review-journals>li,.peer-review-journals>li:nth-last-child(-n+2){grid-column:auto;background:white;border:1px solid #bbb;min-height:0;padding:12px;break-inside:avoid}.peer-review-journals h3{font-size:16px}}
