@@ -39,4 +39,4 @@ Deleting files from the publishing tree does not erase earlier Git commits, cach
 
 ## Peer-review service
 
-Peer-review service uses its original compact position in the Recognition and service column, between the research award and student leadership. The existing journal names are emphasized in bold at the original font size. There is no separate peer-review section, navigation item, or reviewer count. The peer-review anchor remains available for direct links to the compact reviewer block.
+Peer-review service uses its original compact position in the Recognition and service column, between the research award and student leadership. The existing journal names are emphasized in bold at the original font size. There is no separate peer-review section, navigation item, or reviewer count. The peer-review anchor remains available for direct links to the compact reviewer block. Each journal name links to its official publisher homepage in a new tab, with a subtle underline and an accessible destination label.

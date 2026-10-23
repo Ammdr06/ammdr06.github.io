@@ -59,3 +59,5 @@
 
 /* Highlight journal names within the original reviewer-service layout. */
 .reviewer-service li strong{font-weight:600;color:var(--ink)}
+.reviewer-service li a{text-decoration:underline;text-decoration-color:var(--gold-light);text-decoration-thickness:1px;text-underline-offset:3px}
+.reviewer-service li a:hover,.reviewer-service li a:focus-visible{text-decoration-color:var(--gold)}
