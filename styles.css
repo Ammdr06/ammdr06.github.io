@@ -57,12 +57,5 @@
 .request-actions button:disabled,.close-certificate-dialog:disabled{opacity:.7;cursor:wait}
 .request-actions button:disabled:not([aria-busy="true"]){cursor:default}
 
-/* Peer-review service follows the Publications typography and light surfaces. */
-.peer-review-section{background:var(--paper);color:var(--ink);border-top:1px solid var(--line)}
-.peer-review-journals{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0 32px;list-style:none;margin:0;padding:0}
-.peer-review-journals>li{grid-column:span 2;display:flex;align-items:center;padding:18px 0;border-top:1px solid var(--line)}
-.peer-review-journals>li:nth-last-child(-n+2){grid-column:span 3}
-.peer-review-journals h3{font-family:var(--sans);font-size:14px;line-height:1.7;font-weight:600;letter-spacing:0;color:#4f606a;margin:0;overflow-wrap:break-word}
-@media(max-width:920px){.peer-review-journals{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px}.peer-review-journals>li,.peer-review-journals>li:nth-last-child(-n+2){grid-column:auto}.peer-review-journals>li:last-child{grid-column:1/-1}.peer-review-journals h3{font-size:13px}}
-@media(max-width:680px){.peer-review-journals{grid-template-columns:1fr;gap:0}.peer-review-journals>li,.peer-review-journals>li:nth-last-child(-n+2),.peer-review-journals>li:last-child{grid-column:auto;padding:16px 0}}
-@media print{.peer-review-section{background:white;color:#111;border-top:1px solid #bbb}.peer-review-journals{grid-template-columns:1fr 1fr;gap:0 20px}.peer-review-journals>li,.peer-review-journals>li:nth-last-child(-n+2){grid-column:auto;padding:12px 0;break-inside:avoid}.peer-review-journals h3{color:#333}}
+/* Highlight journal names within the original reviewer-service layout. */
+.reviewer-service li strong{font-weight:600;color:var(--ink)}

@@ -39,4 +39,4 @@ Deleting files from the publishing tree does not erase earlier Git commits, cach
 
 ## Peer-review service
 
-Peer-review service has a dedicated full-width section immediately after Publications. It identifies the role as ad hoc reviewer and presents the existing journal names in a compact responsive list using the same light surface and journal-name typography as Publications. Peer review is included in the page navigation. No reviewer count or summary-strip metric is used. The earlier small reviewer block was moved out of the Recognition and leadership column.
+Peer-review service uses its original compact position in the Recognition and service column, between the research award and student leadership. The existing journal names are emphasized in bold at the original font size. There is no separate peer-review section, navigation item, or reviewer count. The peer-review anchor remains available for direct links to the compact reviewer block.
