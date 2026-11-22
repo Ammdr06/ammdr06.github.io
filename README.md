@@ -19,7 +19,7 @@ Publishing source: the **main** branch, **/(root)** folder. No build or dependen
 - `assets/mahadeer-postdoctoral-cv.pdf`: postdoctoral application CV.
 - `assets/mahadeer-publications.bib`: downloadable bibliography.
 
-Fonts are served locally; their licensing information is in `assets/font-license.txt`. No photograph or signature was extracted from the CVs. The public PDF downloads are the portfolio-specific versions supplied on November 21, 2026. Publish only versions intended for public access.
+Fonts are served locally; their licensing information is in `assets/font-license.txt`. No photograph or signature was extracted from the CVs. The public PDF downloads are the portfolio-specific versions supplied on November 22, 2026. Publish only versions intended for public access.
 
 After editing the site files, commit to `main`; GitHub Pages publishes updates automatically when configured with the publishing source above.
 
